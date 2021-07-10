@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class sunScript : MonoBehaviour
 {
-    
+    //testing   
 
     // Update is called once per frame
     void Update()
