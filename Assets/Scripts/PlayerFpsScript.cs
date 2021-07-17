@@ -1,19 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
+
 
 public class PlayerFpsScript : MonoBehaviour
 {
     public AudioClip shootSound;
     public float soundIntensity = 5f;
     public LayerMask zombieLayer;
+    public float walkEnemyPerceptionRadius = 1f;
+    public float sprintEnemyPerceptionRadius = 1.5f;
+
 
     private AudioSource audioSource;
+    private FirstPersonController fpsc;
+    private SphereCollider sphereCollider;
 
     // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        fpsc = GetComponent<FirstPersonController>();
+        sphereCollider = GetComponent<SphereCollider>(); 
     }
 
     // Update is called once per frame
@@ -23,6 +32,15 @@ public class PlayerFpsScript : MonoBehaviour
         {
             Fire();
         }
+        if (fpsc.GetPlayerStealthProfile() == 0)
+        {
+            sphereCollider.radius = walkEnemyPerceptionRadius;
+        }
+        else
+        {
+            sphereCollider.radius = sprintEnemyPerceptionRadius;
+        }
+        
     }
 
     // we caan use walk sound insted fire sound
@@ -36,6 +54,13 @@ public class PlayerFpsScript : MonoBehaviour
         }
     }
 
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Zombie"))
+        {
+            other.GetComponent<AI1Script>().OnAware();
+        }
+    }
 
 
 
