@@ -18,6 +18,7 @@ class WaterEditorUtility
 	public static void SetMaterialColor(System.String name, Color color, Material mat) {
 		mat.SetColor(name, color);
 	}
+
 	public static Vector4 GetMaterialVector(System.String name, Material mat) {
 		return mat.GetVector(name);
 	}

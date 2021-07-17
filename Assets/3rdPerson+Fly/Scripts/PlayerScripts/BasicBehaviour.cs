@@ -263,8 +263,21 @@ public class BasicBehaviour : MonoBehaviour
 	// Check if player is sprinting.
 	public virtual bool IsSprinting()
 	{
+
+		//asaf added
+		
+		//
 		return sprint && IsMoving() && CanSprint();
 	}
+
+
+	//asaf added
+	public int GetPlayerStealthPrifile()
+    {
+
+		return 1;
+    }
+	//
 
 	// Check if player can sprint (all behaviours must allow).
 	public bool CanSprint()
