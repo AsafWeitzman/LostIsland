@@ -17,16 +17,22 @@ public class AI1Script : MonoBehaviour
     //
     
     public float fov = 120f;
+    public float wanderSpeed = 1.1f;
+    public float chaseSpeed = 3f;
     public float viewDistance = 10f;
     public float wanderRadius = 7f;
+    public float loseThreshhold = 10f; // time is sec until we lose the player after we stop detecting it
     public WanderType wanderType = WanderType.Random;
     public Transform[] waypoints; //array of waypoints is only used when waypoint wandering is selected
     
+    private bool isDetecting = false;
     private bool isAware = false;
     private Vector3 wanderPoint;
     private NavMeshAgent agent;
     private Renderer renderer;
     private int waypointIndex = 0;
+    private Animator animator;
+    private float loseTimer = 0;
 
 
     // tpsc
@@ -40,6 +46,7 @@ public class AI1Script : MonoBehaviour
         //
         agent = GetComponent<NavMeshAgent>();
         renderer = GetComponent<Renderer>();
+        animator = GetComponentInChildren<Animator>();
         wanderPoint = RandomWanderPoint();
 
     }
@@ -50,14 +57,29 @@ public class AI1Script : MonoBehaviour
         {
             // chase player
             agent.SetDestination(fpsc.transform.position);
-            renderer.material.color = Color.red;
+            animator.SetBool("Aware", true);
+            agent.speed = chaseSpeed;
+            //renderer.material.color = Color.red;
+
+            if (!isDetecting)
+            {
+                loseTimer += Time.deltaTime;
+                if(loseTimer >= loseThreshhold)
+                {
+                    isAware = false;
+                    loseTimer = 0;
+                }
+            }
         }
         else
         {
-            SearchForPlayer();
             Wander();
-            renderer.material.color = Color.blue;
+            animator.SetBool("Aware", false);
+            agent.speed = wanderSpeed;
+            //renderer.material.color = Color.blue;
         }
+        SearchForPlayer();
+
     }
 
     public void SearchForPlayer()
@@ -73,15 +95,33 @@ public class AI1Script : MonoBehaviour
                     {
                         OnAware();
                     }
+                    else
+                    {
+                        isDetecting = false;
+                    }
+                }
+                else
+                {
+                    isDetecting = false;
                 }
             }
+            else
+            {
+                isDetecting = false;
+            }
 
+        }
+        else
+        {
+            isDetecting = false;
         }
     }
 
     public void OnAware()
     {
         isAware = true;
+        isDetecting = true;
+        loseTimer = 0;
     }
 
 
