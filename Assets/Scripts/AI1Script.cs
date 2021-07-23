@@ -53,7 +53,7 @@ public class AI1Script : MonoBehaviour
         wanderPoint = RandomWanderPoint();
         ragdollColliders = GetComponentsInChildren<Collider>();
         ragdollRigidbodies = GetComponentsInChildren<Rigidbody>();
-        
+
         foreach (Collider col in ragdollColliders)
         {
             if (!col.CompareTag("Zombie"))
@@ -61,12 +61,10 @@ public class AI1Script : MonoBehaviour
                 col.enabled = false;
             }
         }
-
         foreach (Rigidbody rb in ragdollRigidbodies)
         {
             rb.isKinematic = true;
         }
-
 
     }
 
@@ -153,16 +151,28 @@ public class AI1Script : MonoBehaviour
     {
         agent.speed = 0;
         animator.enabled = false;
-
-        foreach (Collider col in ragdollColliders)
+        
+        foreach (Collider col in ragdollColliders) 
         {
             col.enabled = true;
         }
 
+        /*
         foreach (Rigidbody rb in ragdollRigidbodies)
         {
             rb.isKinematic = false;
         }
+        */
+        foreach (Rigidbody rb in ragdollRigidbodies)
+        {
+            if (!rb.CompareTag("Zombie"))
+            {
+                rb.isKinematic = false;
+            }
+        }
+
+            
+
     }
 
 
