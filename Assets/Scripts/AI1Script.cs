@@ -35,6 +35,8 @@ public class AI1Script : MonoBehaviour
     private Animator animator;
     private float loseTimer = 0;
 
+    private Collider[] ragdollColliders;
+    private Rigidbody[] ragdollRigidbodies;
 
     // tpsc
     //public MonoBehaviour fpsc;
@@ -49,6 +51,22 @@ public class AI1Script : MonoBehaviour
         renderer = GetComponent<Renderer>();
         animator = GetComponentInChildren<Animator>();
         wanderPoint = RandomWanderPoint();
+        ragdollColliders = GetComponentsInChildren<Collider>();
+        ragdollRigidbodies = GetComponentsInChildren<Rigidbody>();
+        
+        foreach (Collider col in ragdollColliders)
+        {
+            if (!col.CompareTag("Zombie"))
+            {
+                col.enabled = false;
+            }
+        }
+
+        foreach (Rigidbody rb in ragdollRigidbodies)
+        {
+            rb.isKinematic = true;
+        }
+
 
     }
 
@@ -56,8 +74,7 @@ public class AI1Script : MonoBehaviour
     {
         if (health <= 0)
         {
-            agent.speed = 0;
-            animator.enabled = false;
+            Die();
             return;
         }
         if (isAware)
@@ -129,6 +146,23 @@ public class AI1Script : MonoBehaviour
         isAware = true;
         isDetecting = true;
         loseTimer = 0;
+    }
+
+
+    public void Die()
+    {
+        agent.speed = 0;
+        animator.enabled = false;
+
+        foreach (Collider col in ragdollColliders)
+        {
+            col.enabled = true;
+        }
+
+        foreach (Rigidbody rb in ragdollRigidbodies)
+        {
+            rb.isKinematic = false;
+        }
     }
 
 
