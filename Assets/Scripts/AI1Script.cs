@@ -18,6 +18,7 @@ public class AI1Script : MonoBehaviour
     
     public float fov = 120f;
     public float wanderSpeed = 1.1f;
+    public int health = 100;
     public float chaseSpeed = 3f;
     public float viewDistance = 10f;
     public float wanderRadius = 7f;
@@ -53,6 +54,12 @@ public class AI1Script : MonoBehaviour
 
     public void Update()
     {
+        if (health <= 0)
+        {
+            agent.speed = 0;
+            animator.enabled = false;
+            return;
+        }
         if (isAware)
         {
             // chase player
@@ -159,6 +166,12 @@ public class AI1Script : MonoBehaviour
             }
         }
 
+    }
+
+
+    public void OnHit(int damage)
+    {
+        health -= damage;
     }
 
     public Vector3 RandomWanderPoint()

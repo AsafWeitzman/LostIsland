@@ -16,12 +16,13 @@ public class sunScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.RotateAround(Vector3.zero, Vector3.right, 5 * Time.deltaTime);
+        transform.RotateAround(Vector3.zero, Vector3.right, 8f * Time.deltaTime);
         transform.LookAt(Vector3.zero);
-
+        
         if (transform.rotation.x > 0)
         {
             //
+            /*
             if (Time.time > nextActionTime)
             {
                 nextActionTime += period;
@@ -30,18 +31,17 @@ public class sunScript : MonoBehaviour
                 flag = true;
 
             }
-            
+            */
+        
             //
             //InvokeRepeating("CreateZombies", 1.0f, 5f);
         }
+        
         /*
         if (flag)
         {
             DestroyZombies();
         }*/
-
-
-
     }
 
 
