@@ -240,7 +240,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_MouseLook.LookRotation (transform, m_Camera.transform);
         }
 
-        public int GetPlayerStealthProfile()
+        public int GetPlayerStealthProfile() // we added
         {
             if (m_IsWalking)
             {

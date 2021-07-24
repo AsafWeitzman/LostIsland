@@ -12,6 +12,7 @@ public class PlayerFpsScript : MonoBehaviour
     public float walkEnemyPerceptionRadius = 1f;
     public float sprintEnemyPerceptionRadius = 1.5f;
     public Transform spherecastSpawn;
+    public GameObject bloodEffect;
 
     public int attackDamage = 30;
     private AudioSource audioSource;
@@ -34,25 +35,35 @@ public class PlayerFpsScript : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Input.GetMouseButton(0)  DOING");
+            //Debug.Log("Input.GetMouseButton(0)  DOING");
+
             Fire();
+
         }
         if (fpsc.GetPlayerStealthProfile() == 0)
         {
             sphereCollider.radius = walkEnemyPerceptionRadius;
+            animator.SetTrigger("Walk"); //
+
+
         }
         else
         {
             sphereCollider.radius = sprintEnemyPerceptionRadius;
+            animator.SetTrigger("Sprint"); //
+
         }
 
     }
+
+    
 
     // we can use walk sound insted fire sound
     public void Fire()
     {
         audioSource.PlayOneShot(attackSound);
         animator.SetTrigger("Attack");
+
         Collider[] zombies = Physics.OverlapSphere(transform.position, soundIntensity, zombieLayer);
         for (int i = 0; i < zombies.Length; i++)
         {
@@ -64,6 +75,7 @@ public class PlayerFpsScript : MonoBehaviour
         if (Physics.SphereCast(spherecastSpawn.position, 0.5f, spherecastSpawn.TransformDirection(Vector3.forward), out hit, zombieLayer))
         {
             hit.transform.GetComponent<AI1Script>().OnHit(attackDamage);
+            Instantiate(bloodEffect, hit.point, Quaternion.LookRotation(hit.normal));
         }
     }
 
