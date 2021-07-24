@@ -31,8 +31,10 @@ public class PlayerFpsScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        
+        if (Input.GetMouseButtonDown(0))
         {
+            Debug.Log("Input.GetMouseButton(0)  DOING");
             Fire();
         }
         if (fpsc.GetPlayerStealthProfile() == 0)
@@ -43,10 +45,10 @@ public class PlayerFpsScript : MonoBehaviour
         {
             sphereCollider.radius = sprintEnemyPerceptionRadius;
         }
-        
+
     }
 
-    // we caan use walk sound insted fire sound
+    // we can use walk sound insted fire sound
     public void Fire()
     {
         audioSource.PlayOneShot(attackSound);
@@ -58,8 +60,8 @@ public class PlayerFpsScript : MonoBehaviour
         }
 
         RaycastHit hit;
-        
-        if (Physics.SphereCast(spherecastSpawn.position, 0.5f, spherecastSpawn.TransformDirection(Vector3.forward), out hit, zombieLayer)) 
+
+        if (Physics.SphereCast(spherecastSpawn.position, 0.5f, spherecastSpawn.TransformDirection(Vector3.forward), out hit, zombieLayer))
         {
             hit.transform.GetComponent<AI1Script>().OnHit(attackDamage);
         }

@@ -10,12 +10,9 @@ public class AI1Script : MonoBehaviour
 
     public enum WanderType {Random, Waypoint};
 
-
-
     // fps
     public FirstPersonController fpsc;
     //
-    
     public float fov = 120f;
     public float wanderSpeed = 1.1f;
     public int health = 100;
@@ -157,12 +154,6 @@ public class AI1Script : MonoBehaviour
             col.enabled = true;
         }
 
-        /*
-        foreach (Rigidbody rb in ragdollRigidbodies)
-        {
-            rb.isKinematic = false;
-        }
-        */
         foreach (Rigidbody rb in ragdollRigidbodies)
         {
             if (!rb.CompareTag("Zombie"))
