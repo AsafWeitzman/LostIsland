@@ -13,8 +13,11 @@ public class PlayerFpsScript : MonoBehaviour
     public float sprintEnemyPerceptionRadius = 1.5f;
     public Transform spherecastSpawn;
     public GameObject bloodEffect;
-
     public int attackDamage = 30;
+    public int max_health;
+
+    private Transform ui_healthbar;
+    private int current_health = 10000;
     private AudioSource audioSource;
     private FirstPersonController fpsc;
     private SphereCollider sphereCollider;
@@ -23,16 +26,25 @@ public class PlayerFpsScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        current_health = max_health;
         audioSource = GetComponent<AudioSource>();
         fpsc = GetComponent<FirstPersonController>();
         sphereCollider = GetComponent<SphereCollider>();
         animator = GetComponentInChildren<Animator>();
+        
+        
+        ui_healthbar = GameObject.Find("HUD/Health/Bar").transform;
+        RefreshHealthBar();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (current_health <= 0)
+        {
+            Die();
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             //Debug.Log("Input.GetMouseButton(0)  DOING");
@@ -53,7 +65,8 @@ public class PlayerFpsScript : MonoBehaviour
             animator.SetTrigger("Sprint"); //
 
         }
-
+        //ui refreshes
+        RefreshHealthBar();
     }
 
     
@@ -70,12 +83,12 @@ public class PlayerFpsScript : MonoBehaviour
             zombies[i].GetComponent<AI1Script>().OnAware();
         }
 
-        RaycastHit hit;
+        RaycastHit hit3;
 
-        if (Physics.SphereCast(spherecastSpawn.position, 0.5f, spherecastSpawn.TransformDirection(Vector3.forward), out hit, zombieLayer))
+        if (Physics.SphereCast(spherecastSpawn.position, 0.5f, spherecastSpawn.TransformDirection(Vector3.forward), out hit3, zombieLayer))
         {
-            hit.transform.GetComponent<AI1Script>().OnHit(attackDamage);
-            Instantiate(bloodEffect, hit.point, Quaternion.LookRotation(hit.normal));
+            hit3.transform.GetComponent<AI1Script>().OnHit(attackDamage);
+            Instantiate(bloodEffect, hit3.point, Quaternion.LookRotation(hit3.normal));
         }
     }
 
@@ -86,6 +99,52 @@ public class PlayerFpsScript : MonoBehaviour
             other.GetComponent<AI1Script>().OnAware();
         }
     }
+
+    private void RefreshHealthBar()
+    {
+        float t_health_ratio = (float)current_health / (float)max_health;
+        if (t_health_ratio >= 0)
+        {
+            ui_healthbar.localScale = Vector3.Lerp(ui_healthbar.localScale, new Vector3(t_health_ratio, 1, 1), Time.deltaTime * 8f);
+            Debug.Log("current health = " + current_health);
+        }
+        
+    }
+
+    //
+    
+    /*
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Zombie")
+        {
+            current_health -= 10;
+            Debug.Log("current health = "+ current_health);
+            RefreshHealthBar();
+        }
+    }
+    */
+
+    //
+    public void OnHit(int damage)
+    {
+        current_health -= damage;
+        RefreshHealthBar();
+    }
+
+
+
+    public void Die()
+    {
+        // game over
+
+
+
+    }
+
+
+    //
+
 
 
 

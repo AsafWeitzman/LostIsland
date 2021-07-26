@@ -22,7 +22,16 @@ public class AI1Script : MonoBehaviour
     public float loseThreshhold = 10f; // time is sec until we lose the player after we stop detecting it
     public WanderType wanderType = WanderType.Random;
     public Transform[] waypoints; //array of waypoints is only used when waypoint wandering is selected
+
     
+    public int attackDamage = 5;
+    public Transform spherecastSpawn;
+    public LayerMask bodyLayer;
+
+
+    
+
+
     private bool isDetecting = false;
     private bool isAware = false;
     private Vector3 wanderPoint;
@@ -103,7 +112,7 @@ public class AI1Script : MonoBehaviour
 
     public void SearchForPlayer()
     {
-        if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f) 
+        if (Vector3.Angle(Vector3.forward, transform.InverseTransformPoint(fpsc.transform.position)) < fov / 2f) // pbody switched fpsc
         {
             if (Vector3.Distance(fpsc.transform.position, transform.position) < viewDistance)
             {
@@ -113,6 +122,10 @@ public class AI1Script : MonoBehaviour
                     if (hit.transform.CompareTag("Player"))
                     {
                         OnAware();
+                        //
+                        Fire();
+                        Debug.Log("zombie fire !");
+                        //
                     }
                     else
                     {
@@ -128,7 +141,6 @@ public class AI1Script : MonoBehaviour
             {
                 isDetecting = false;
             }
-
         }
         else
         {
@@ -217,9 +229,31 @@ public class AI1Script : MonoBehaviour
         return new Vector3(navhit.position.x, transform.position.y, navhit.position.z);
     }
 
-   
 
-  
+    //
+    public void Fire()
+    {
+        //audioSource.PlayOneShot(attackSound);
+        //animator.SetTrigger("Attack");
+        /*
+        Collider[] zombies = Physics.OverlapSphere(transform.position, soundIntensity, zombieLayer);
+        for (int i = 0; i < zombies.Length; i++)
+        {
+            zombies[i].GetComponent<AI1Script>().OnAware();
+        }
+        */
+
+        RaycastHit hit2;
+
+        if (Physics.SphereCast(spherecastSpawn.position, 0.1f, spherecastSpawn.TransformDirection(Vector3.forward), out hit2, bodyLayer))
+        {
+            hit2.transform.GetComponent<PlayerFpsScript>().OnHit(attackDamage);
+            Debug.Log("hit ");
+        }
+    }
+
+    //
+
 
 
 }
