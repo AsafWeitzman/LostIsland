@@ -6,6 +6,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerFpsScript : MonoBehaviour
 {
+    public GameOverScreenScript GameOverScreen;
     public AudioClip attackSound;
     public float soundIntensity = 5f;
     public LayerMask zombieLayer;
@@ -14,7 +15,10 @@ public class PlayerFpsScript : MonoBehaviour
     public Transform spherecastSpawn;
     public GameObject bloodEffect;
     public int attackDamage = 30;
-    public int max_health = 10000;
+    public int max_health = 100; //10000
+    public int points = 30; // from nir
+
+
 
     private Transform ui_healthbar;
     private int current_health;
@@ -43,7 +47,7 @@ public class PlayerFpsScript : MonoBehaviour
         if (current_health <= 0)
         {
             Die();
-            return;
+            
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -136,11 +140,12 @@ public class PlayerFpsScript : MonoBehaviour
     {
         current_health = max_health;
     }
-
+    
+    
     public void Die()
     {
         // game over
-
+        GameOverScreen.Setup(points);
 
 
     }
