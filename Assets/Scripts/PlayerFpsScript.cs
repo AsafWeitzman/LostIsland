@@ -14,10 +14,10 @@ public class PlayerFpsScript : MonoBehaviour
     public Transform spherecastSpawn;
     public GameObject bloodEffect;
     public int attackDamage = 30;
-    public int max_health;
+    public int max_health = 10000;
 
     private Transform ui_healthbar;
-    private int current_health = 10000;
+    private int current_health;
     private AudioSource audioSource;
     private FirstPersonController fpsc;
     private SphereCollider sphereCollider;
@@ -132,7 +132,10 @@ public class PlayerFpsScript : MonoBehaviour
         RefreshHealthBar();
     }
 
-
+    public void Heal()
+    {
+        current_health = max_health;
+    }
 
     public void Die()
     {
