@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
+using UnityEngine.SceneManagement;
+
 
 
 public class PlayerFpsScript : MonoBehaviour
@@ -17,8 +19,8 @@ public class PlayerFpsScript : MonoBehaviour
     public int attackDamage = 30;
     public int max_health = 100; //10000
     public int points = 30; // from nir
-
-
+    public bool isAlive = true;                       
+    
 
     private Transform ui_healthbar;
     private int current_health;
@@ -35,8 +37,9 @@ public class PlayerFpsScript : MonoBehaviour
         fpsc = GetComponent<FirstPersonController>();
         sphereCollider = GetComponent<SphereCollider>();
         animator = GetComponentInChildren<Animator>();
+
         
-        
+
         ui_healthbar = GameObject.Find("HUD/Health/Bar").transform;
         RefreshHealthBar();
     }
@@ -46,7 +49,9 @@ public class PlayerFpsScript : MonoBehaviour
     {
         if (current_health <= 0)
         {
+            current_health = 0;
             Die();
+            return;
             
         }
         if (Input.GetMouseButtonDown(0))
@@ -145,11 +150,15 @@ public class PlayerFpsScript : MonoBehaviour
     public void Die()
     {
         // game over
-        GameOverScreen.Setup(points);
-
+        //GameOverScreen.Setup(points);
+        SceneManager.LoadScene(4);
 
     }
 
+    public bool is_alive()
+    {
+        return isAlive;
+    }
 
     //
 

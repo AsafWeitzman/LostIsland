@@ -12,6 +12,7 @@ public class AI1Script : MonoBehaviour
 
     // fps
     public FirstPersonController fpsc;
+
     //
     public float fov = 120f;
     public float wanderSpeed = 1.1f;
@@ -76,6 +77,8 @@ public class AI1Script : MonoBehaviour
 
     public void Update()
     {
+
+
         if (health <= 0)
         {
             Die();

@@ -11,7 +11,7 @@ public class GameOverScreenScript : MonoBehaviour
     public void Setup(int score)
     {
         gameObject.SetActive(true);
-        pointsText.text = score.ToString() + "POINTS";
+        pointsText.text = score.ToString() + " POINTS";
 
     }
 
@@ -22,7 +22,7 @@ public class GameOverScreenScript : MonoBehaviour
 
     public void ExitButton()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene(0);
     }
 
 }
