@@ -57,6 +57,7 @@ public class GameScript : MonoBehaviour
                 }
                 if (correctTiles == tiles.Length - 1)
                 {
+                    PlayerFpsScript.num_of_comp_missions++; // if puzzle is solved num of player mission inc by 1
                     isFinished = true;
                     endPannel.SetActive(true);
                 }

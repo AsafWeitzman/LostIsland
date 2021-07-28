@@ -28,6 +28,7 @@ public class playManager : MonoBehaviour
         }
         if (winner)
         {
+            PlayerFpsScript.num_of_comp_missions++; // if the usser won we inc by 1 
             Time.timeScale = 0;
             winingPanel.SetActive(true);
         }

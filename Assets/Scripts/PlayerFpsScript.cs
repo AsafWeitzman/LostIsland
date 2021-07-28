@@ -20,7 +20,7 @@ public class PlayerFpsScript : MonoBehaviour
     public int max_health = 100; //10000
     public int points = 30; // from nir
     public bool isAlive = true;                       
-    
+    public static int num_of_comp_missions = 1;
 
     private Transform ui_healthbar;
     private int current_health;
