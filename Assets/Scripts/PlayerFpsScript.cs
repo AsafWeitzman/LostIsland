@@ -47,35 +47,41 @@ public class PlayerFpsScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (current_health <= 0)
+
+
+        if (!PauseMenuScript.GameIsPaused)
         {
-            current_health = 0;
-            Die();
-            return;
-            
+            if (current_health <= 0)
+            {
+                current_health = 0;
+                Die();
+                return;
+
+            }
+            if (Input.GetMouseButtonDown(0))
+            {
+                //Debug.Log("Input.GetMouseButton(0)  DOING");
+
+                Fire();
+
+            }
+            if (fpsc.GetPlayerStealthProfile() == 0)
+            {
+                sphereCollider.radius = walkEnemyPerceptionRadius;
+                animator.SetTrigger("Walk"); //
+
+
+            }
+            else
+            {
+                sphereCollider.radius = sprintEnemyPerceptionRadius;
+                animator.SetTrigger("Sprint"); //
+
+            }
+            //ui refreshes
+            RefreshHealthBar();
         }
-        if (Input.GetMouseButtonDown(0))
-        {
-            //Debug.Log("Input.GetMouseButton(0)  DOING");
-
-            Fire();
-
-        }
-        if (fpsc.GetPlayerStealthProfile() == 0)
-        {
-            sphereCollider.radius = walkEnemyPerceptionRadius;
-            animator.SetTrigger("Walk"); //
-
-
-        }
-        else
-        {
-            sphereCollider.radius = sprintEnemyPerceptionRadius;
-            animator.SetTrigger("Sprint"); //
-
-        }
-        //ui refreshes
-        RefreshHealthBar();
+        
     }
 
     
