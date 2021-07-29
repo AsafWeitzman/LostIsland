@@ -18,11 +18,19 @@ public class PlayerFpsScript : MonoBehaviour
     public GameObject bloodEffect;
     public int attackDamage = 30;
     public int max_health = 100; //10000
+    public int max_missions = 2; //10000
+
+
     public int points = 30; // from nir
     public bool isAlive = true;                       
-    public static int num_of_comp_missions = 1;
+    public static int num_of_comp_missions = 0;
+
 
     private Transform ui_healthbar;
+    private Transform ui_progressbar;
+
+    private int current_missions;
+
     private int current_health;
     private AudioSource audioSource;
     private FirstPersonController fpsc;
@@ -33,6 +41,9 @@ public class PlayerFpsScript : MonoBehaviour
     void Start()
     {
         current_health = max_health;
+        //
+        current_missions = num_of_comp_missions;
+        //
         audioSource = GetComponent<AudioSource>();
         fpsc = GetComponent<FirstPersonController>();
         sphereCollider = GetComponent<SphereCollider>();
@@ -41,7 +52,10 @@ public class PlayerFpsScript : MonoBehaviour
         
 
         ui_healthbar = GameObject.Find("HUD/Health/Bar").transform;
+        ui_progressbar = GameObject.Find("HUD/Progress/Bar").transform;
         RefreshHealthBar();
+        RefreshProgressBar();
+
     }
 
     // Update is called once per frame
@@ -80,6 +94,7 @@ public class PlayerFpsScript : MonoBehaviour
             }
             //ui refreshes
             RefreshHealthBar();
+            RefreshProgressBar();
         }
         
     }
@@ -126,8 +141,23 @@ public class PlayerFpsScript : MonoBehaviour
         
     }
 
+
+    private void RefreshProgressBar()
+    {
+        float t_progress_ratio = (float)num_of_comp_missions / (float)max_missions;
+        if (t_progress_ratio >= 0)
+        {
+            if (num_of_comp_missions<=2)
+            {
+                ui_progressbar.localScale = Vector3.Lerp(ui_progressbar.localScale, new Vector3(t_progress_ratio, 1, 1), Time.deltaTime * 8f);
+            }
+
+        }
+
+    }
+
     //
-    
+
     /*
     public void OnCollisionEnter(Collision collision)
     {

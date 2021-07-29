@@ -11,9 +11,14 @@ public class MainMenuScript : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void Creators()
+    {
+        SceneManager.LoadScene(6);
+    }
+
     public void QuitGame()
     {
         Debug.Log("QUIT!");
-        //Application.Quit();
+        Application.Quit();
     }
 }
